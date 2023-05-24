@@ -16,7 +16,7 @@ public class Customer {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     protected String name;
     protected String ssn;

@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
 public class Item {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     protected String name;
     protected double price;

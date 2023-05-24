@@ -22,7 +22,7 @@ public class ItemController {
 
     @RequestMapping("/items")
     @ResponseBody
-    public List<Item> getCustomers(){
+    public List<Item> get(){
         return itemRepo.findAll();
     }
 
