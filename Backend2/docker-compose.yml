@@ -13,7 +13,7 @@ services:
       - ./customer-micro/sql:/docker-entrypoint-initdb.d
     networks:
       - micro-network
-
+    restart: always
 
   item-db:
     image: mysql
@@ -28,6 +28,7 @@ services:
       - ./item-micro/sql:/docker-entrypoint-initdb.d
     networks:
       - micro-network
+    restart: always
 
 
   orders-db:
@@ -43,6 +44,7 @@ services:
       - ./order-micro/sql:/docker-entrypoint-initdb.d
     networks:
       - micro-network
+    restart: always
 
 
   customer-micro:
@@ -55,6 +57,7 @@ services:
       - customer-db
     networks:
       - micro-network
+    restart: always
 
   item-micro:
     build:
@@ -66,6 +69,7 @@ services:
       - item-db
     networks:
       - micro-network
+    restart: always
 
   order-micro:
     build:
@@ -77,6 +81,7 @@ services:
       - orders-db
     networks:
       - micro-network
+    restart: always
 
   gateway-micro:
     build:
@@ -90,6 +95,8 @@ services:
       - order-micro
     networks:
       - micro-network
+    restart: always
 
 networks:
   micro-network:
+

@@ -45,6 +45,32 @@ public class CustomerController {
         Customer customer = customerRepo.findById(id).get();
         return customer.getSsn();
     }
+
+    @RequestMapping("/customers/new")
+    @ResponseBody
+    public Customer createNew(@RequestBody Customer customer){
+        return customerRepo.save(new Customer(customer.getName(), customer.getSsn()));
+    }
+
+    @RequestMapping(value = "/customers/{id}/update", method = RequestMethod.PUT)
+    @ResponseBody
+    public Customer updateById(@PathVariable long id, @RequestBody Customer updatedCustomer){
+        Customer customerToUpdate = customerRepo.findById(id).get();
+        customerToUpdate.setName(updatedCustomer.getName());
+        customerToUpdate.setSsn(updatedCustomer.getSsn());
+
+        return customerToUpdate;
+    }
+
+    @RequestMapping(value = "/customers/{id}/delete", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String deleteById(@PathVariable long id){
+        Customer customer = customerRepo.findById(id).get();
+        customerRepo.deleteById(id);
+
+        return "Customer "+ customer.getName() + " was deleted";
+    }
+
 }
 
 
