@@ -5,8 +5,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -16,108 +19,36 @@ import java.util.List;
 @Controller
 public class OrderController {
 
-    private final OrderRepo orderRepo;
-    private final CustomerRepo customerRepo;
-    private final ItemRepo itemRepo;
-    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
+    OrderRepo orderRepo;
 
-    public OrderController(OrderRepo orderRepo, CustomerRepo customerRepo, ItemRepo itemRepo){
+    public OrderController(OrderRepo orderRepo){
         this.orderRepo = orderRepo;
-        this.customerRepo = customerRepo;
-        this.itemRepo = itemRepo;
     }
-    @RequestMapping("/orders/header")
-    @ResponseBody
-    public List<String> getHeaders(){
-        List<String> headers = new ArrayList<>();
-
-        Field[] fields = Order.class.getDeclaredFields();
-        for (Field field : fields) {
-            headers.add(field.getName());
-        }
-        log.info(headers.toString());
-        return headers;
-    }
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
     @RequestMapping("/orders")
     @ResponseBody
-    public List<Order> getAllOrder(){
+    public List<Orders> getOrders(){
         return orderRepo.findAll();
     }
-    @RequestMapping("orders/getById")
-    public String getCustomersByIdForm(){
-        return "getOrderById";
-    }
 
-    @RequestMapping("orders/{id}")
-    public String findById(@PathVariable long id){
-        Order orders = orderRepo.findById(id).get();
-/*        Order result = orders.stream()
-                .filter(order -> order.getId() == id)
-                .findFirst()
-                .orElse(null);*/
-        return "orders.html";
-    }
-    @RequestMapping("orders/{id}/delete")
+    @RequestMapping("/orders/info/{id}")
     @ResponseBody
-    public List<Order> deleteById(@PathVariable long id){
-        Order order = orderRepo.findById(id).get();
-        orderRepo.deleteById(id);
-        return orderRepo.findAll();
+    public String customerNameByOrderId(@PathVariable long id){
+        // Create a RestTemplate instance
+        log.info("ok");
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Make the API call to retrieve the username
+        ResponseEntity<String> response = restTemplate.exchange("http://localhost:8080/customers/{id}/name", HttpMethod.GET, null, String.class, id);
+        log.info(response.toString());
+        // Retrieve the username from the response
+        String username = response.getBody();
+        log.info(username);
+        // Return the username or perform any other necessary operations
+        return username;
     }
-
-    @PostMapping(value = "/orders/buy/")
-    public String buyItem(@RequestBody Order o){
-        try{
-            orderRepo.save(o);
-            log.info("New order was successfully created.");
-        }catch (Exception e) {
-            log.error("Could not create new orderr. " + e.getMessage());
-        }
-        return "orders";
-    }
-    @RequestMapping("orders/{id}/create")
-    public String createNewOrderByCustomer(@PathVariable long id){
-        Customer customer = customerRepo.findById(id).get();
-
-        List<Item> items = itemRepo.findAll();
-        return "placeOrderByCustomerId";
-    }
-
-    @PostMapping(value = "/orders/buy/{id}")
-    public String testBuyItem(@PathVariable long id, @RequestBody String itemJson){
-        try{
-            log.info(itemJson);
-
-            Customer customer = customerRepo.findById(id).get();
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Item> list = new ArrayList<>();
-            List<Item> items = new ArrayList<>();
-            try {
-                list = objectMapper.readValue(itemJson, new TypeReference<List<Item>>(){});
-                for(int i =0; i < list.size(); i++){
-                    log.info(list.get(i).toString());
-                    items.add(new Item(list.get(i).getId(), list.get(i).getName(), list.get(i).getPrice()));
-                }
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-
-
-            LocalDate currentDate = LocalDate.now();
-            Order order = new Order();
-            order.setDate(currentDate);
-            order.setCustomer(customer);
-            order.setItems(items);
-            orderRepo.save(order);
-            log.info("New order was successfully created.");
-        }catch (Exception e) {
-            log.error("Could not create new orderr. " + e.getMessage());
-        }
-        return "redirect:/orders";
-    }
-
 }
+
 
 
 

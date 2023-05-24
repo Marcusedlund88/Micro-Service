@@ -13,93 +13,37 @@ import java.util.Map;
 
 @Controller
 public class CustomerController {
-    private final CustomerRepo customerRepo;
-    private static final Logger log = LoggerFactory.getLogger(CustomerController.class);
 
-    @RequestMapping("/test")
-    public String test(Model model) {
-        model.addAttribute("name", "Thymeleaf");
-        return "static";
-    }
+    CustomerRepo customerRepo;
 
-    public CustomerController(CustomerRepo customerRepo){
+    public CustomerController(CustomerRepo customerRepo) {
         this.customerRepo = customerRepo;
     }
+
     @RequestMapping("/customers")
-    public String getAllCustomer(Model model){
-        List<Customer> customers = customerRepo.findAll();
-        model.addAttribute("customers", customers);
-        return "customers.html";
-    }
-    @GetMapping("/customers/fetch/{id}")
     @ResponseBody
-    public Customer fetchCustomerId(@PathVariable long id) {
+    public List<Customer> getCustomers(){
+        return customerRepo.findAll();
+    }
+
+    @RequestMapping("/customers/{id}")
+    @ResponseBody
+    public Customer getById(@PathVariable long id){
+
+        return customerRepo.findById(id).get();
+    }
+
+    @RequestMapping("/customers/{id}/name")
+    @ResponseBody
+    public String getNameById(@PathVariable long id){
         Customer customer = customerRepo.findById(id).get();
-        return customer;
+        return customer.getName();
     }
-    @RequestMapping("customers/getById")
-    public String getCustomersByIdForm(){
-        return "getCustById";
-    }
-
-    @RequestMapping("customers/{id}")
-    public String findById(@PathVariable long id, Model model){
+    @RequestMapping("/customers/{id}/ssn")
+    @ResponseBody
+    public String getSsnById(@PathVariable long id){
         Customer customer = customerRepo.findById(id).get();
-        model.addAttribute("customers", customer);
-        return "customers";
-    }
-    @RequestMapping("customers/{id}/delete")
-    public String deleteById(@PathVariable long id, Model model){
-        Customer customer = customerRepo.findById(id).get();
-        model.addAttribute("customer", customer);
-        customerRepo.deleteById(id);
-        List<Customer> customers = customerRepo.findAll();
-
-        return "delete.html";
-    }
-
-    @RequestMapping("customers/{id}/update")
-    public String updateById(@PathVariable long id, Model model){
-        Customer customer = customerRepo.findById(id).get();
-        model.addAttribute("customer", customer);
-        return "updateCustomer.html";
-    }
-    @RequestMapping("customers/{id}/update/form")
-    public String updateCustomersByForm(@PathVariable long id, Model model){
-        Customer customer = customerRepo.findById(id).get();
-        model.addAttribute("customer", customer);
-        return "updateCustomerForm.html";
-    }
-
-    @PutMapping("customers/{id}/update/form/execute")
-    public ResponseEntity<?> proceedUpdate(@PathVariable long id, @RequestBody Map<String, String> formData) throws Exception {
-        Customer existingCustomer = customerRepo.findById(id).get();
-        existingCustomer.setName(formData.get("name"));
-        existingCustomer.setSsn(formData.get("ssn"));
-        customerRepo.save(existingCustomer);
-        return ResponseEntity.ok().build();
-    }
-
-    @RequestMapping("customers/add")
-    public String addCustomersByForm(){
-        return "addCust.html";
-    }
-
-
-    @PostMapping("customers/sd")
-    public String addCustomer(@RequestParam String name,
-                              @RequestParam String ssn, RedirectAttributes redirectAttributes) {
-        try {
-            Customer newCustomer = new Customer(name, ssn);
-            customerRepo.save(newCustomer);
-            log.info("POST request was successful.");
-        } catch (Exception e) {
-            log.error("POST request failed: " + e.getMessage());
-            e.printStackTrace(); // Add this line to print the exception stack trace
-            redirectAttributes.addFlashAttribute("errorMessage", "Error adding customer. Please try again.");
-            return "redirect:/customers/add"; // Change this line to redirect back to the add form in case of an error
-        }
-        return "redirect:/customers";
+        return customer.getSsn();
     }
 }
 

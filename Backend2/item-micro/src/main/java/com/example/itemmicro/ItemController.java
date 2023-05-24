@@ -11,101 +11,37 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
 public class ItemController {
-    private final ItemRepo itemRepo;
-    private static final Logger log = LoggerFactory.getLogger(ItemController.class);
 
-    public ItemController(ItemRepo itemRepo) {
+    ItemRepo itemRepo;
+
+    public ItemController(ItemRepo itemRepo){
         this.itemRepo = itemRepo;
-    }
-
-    @RequestMapping("/items/header")
-    @ResponseBody
-    public List<String> getHeaders(){
-        List<String> headers = new ArrayList<>();
-
-        Field[] fields = Item.class.getDeclaredFields();
-        for (Field field : fields) {
-            headers.add(field.getName());
-        }
-        log.info(headers.toString());
-        return headers;
     }
 
     @RequestMapping("/items")
     @ResponseBody
-    public List<Item> getAllItems(){
-        return itemRepo.findAll();
-    }
-    @GetMapping("/items/fetch/{id}")
-    @ResponseBody
-    public Item fetchItemId(@PathVariable long id) {
-        Item item = itemRepo.findById(id).get();
-        return item;
-    }
-    @RequestMapping("items/getById")
-    public String getCustomersByIdForm(){
-        return "getItemById";
-    }
-    @RequestMapping("items/{id}")
-    public String findById(@PathVariable long id){
-        Item item = itemRepo.findById(id).get();
-        return "items.html";
-    }
-
-    @RequestMapping("items/{id}/update")
-    public String updateById(@PathVariable long id){
-        Item item = itemRepo.findById(id).get();
-        return "updateItem.html";
-    }
-    @RequestMapping("items/{id}/update/form")
-    public String updateItemByForm(@PathVariable long id){
-        Item item = itemRepo.findById(id).get();
-
-        return "updateItemForm.html";
-    }
-
-    @RequestMapping(value = "items/{id}/update/form/execute", method = RequestMethod.PUT)
-    public String proceedUpdate(@PathVariable Long id, @RequestParam String name,
-                                @RequestParam Double price){
-        Item existingItem = itemRepo.findById(id).get();
-        existingItem.setName(name);
-        existingItem.setPrice(price);
-        itemRepo.save(existingItem);
-        return "redirect:/items";
-    }
-
-    @RequestMapping("items/{id}/delete")
-    @ResponseBody
-    public List<Item> deleteById(@PathVariable long id){
-        Item item = itemRepo.findById(id).get();
-        itemRepo.deleteById(id);
+    public List<Item> getItems(){
         return itemRepo.findAll();
     }
 
-    @RequestMapping("items/add")
-    public String addCustomersByForm(){
-        return "addItem.html";
+    @RequestMapping("/items/{id}")
+    @ResponseBody
+    public Item getById(@PathVariable long id){
+        return itemRepo.findById(id).get();
     }
-
-
-    @PostMapping("items/sd")
-    public String addItem(@RequestParam String name,
-                          @RequestParam Double price, RedirectAttributes redirectAttributes) {
-        try {
-            Item newItem = new Item(name, price);
-            itemRepo.save(newItem);
-            log.info("POST request was successful.");
-        } catch (Exception e) {
-            log.error("POST request failed: " + e.getMessage());
-            e.printStackTrace(); // Add this line to print the exception stack trace
-            redirectAttributes.addFlashAttribute("errorMessage", "Error adding customer. Please try again.");
-            return "redirect:/items/add"; // Change this line to redirect back to the add form in case of an error
-        }
-        return "redirect:/items";
+    @RequestMapping("/items/{id}/name")
+    @ResponseBody
+    public String getNameById(@PathVariable long id){
+        Item item =itemRepo.findById(id).get();
+        return item.getName();
     }
-
+    @RequestMapping("/items/{id}/price")
+    @ResponseBody
+    public double getPriceById(@PathVariable long id){
+        Item item =itemRepo.findById(id).get();
+        return item.getPrice();
+    }
 }
 
 
