@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/orders")
+@CrossOrigin(origins = "http://localhost:9090")
 public class OrderController {
 
     OrderRepo orderRepo;
@@ -25,27 +28,60 @@ public class OrderController {
         this.orderRepo = orderRepo;
     }
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
-    @RequestMapping("/orders")
+    @GetMapping("")
     @ResponseBody
     public List<Orders> getOrders(){
         return orderRepo.findAll();
     }
 
-    @RequestMapping("/orders/info/{id}")
+    @GetMapping("/info/{id}")
     @ResponseBody
     public String customerNameByOrderId(@PathVariable long id){
-        // Create a RestTemplate instance
+
+        Orders orderToVerify = orderRepo.findById(id).get();
+        Long customerId = orderToVerify.getCustomerId();
+
         log.info("ok");
         RestTemplate restTemplate = new RestTemplate();
 
-        // Make the API call to retrieve the username
-        ResponseEntity<String> response = restTemplate.exchange("http://localhost:8080/customers/{id}/name", HttpMethod.GET, null, String.class, id);
-        log.info(response.toString());
-        // Retrieve the username from the response
-        String username = response.getBody();
+
+        ResponseEntity<String> responseCustomer = restTemplate.exchange(
+                "http://gateway-micro:8080/customers/{customerId}/name",
+                HttpMethod.GET,
+                null,
+                String.class,
+                customerId
+        );
+        log.info(responseCustomer.toString());
+
+        String username = responseCustomer.getBody();
+
+        List<String> itemsToEvaluate = new ArrayList<>();
+        orderToVerify.getItemIds().forEach(item->{
+            ResponseEntity<String> responseItem = restTemplate.exchange(
+                    "http://gateway-micro:8080/items/{item}/name",
+                    HttpMethod.GET,
+                    null,
+                    String.class,
+                    item
+            );
+            log.info(responseItem.toString());
+
+            String itemName = responseItem.getBody();
+            itemsToEvaluate.add(itemName);
+        });
+
         log.info(username);
-        // Return the username or perform any other necessary operations
-        return username;
+
+        return username + " " + itemsToEvaluate.toString();
+    }
+    @PostMapping("/new")
+    @ResponseBody
+    public Orders makeNewOrder(@RequestBody Orders orders){
+
+        Orders order = new Orders(orders.getCustomerId(), orders.getItemIds());
+        orderRepo.save(order);
+        return order;
     }
 }
 

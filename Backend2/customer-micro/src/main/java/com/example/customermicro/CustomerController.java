@@ -1,5 +1,6 @@
 package com.example.customermicro;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -12,57 +13,83 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/customers")
+@CrossOrigin(origins = "http://localhost:9090")
 public class CustomerController {
-
+    private static final Logger log = LoggerFactory.getLogger(CustomerController.class);
     CustomerRepo customerRepo;
 
     public CustomerController(CustomerRepo customerRepo) {
         this.customerRepo = customerRepo;
     }
 
-    @RequestMapping("/customers")
+    @GetMapping("")
     @ResponseBody
     public List<Customer> getCustomers(){
         return customerRepo.findAll();
     }
 
-    @RequestMapping("/customers/{id}")
+    @GetMapping("/{id}")
     @ResponseBody
     public Customer getById(@PathVariable long id){
 
         return customerRepo.findById(id).get();
     }
 
-    @RequestMapping("/customers/{id}/name")
+    @GetMapping("/{id}/name")
     @ResponseBody
-    public String getNameById(@PathVariable long id){
+    public ResponseEntity<Object> getNameById(@PathVariable long id){
         Customer customer = customerRepo.findById(id).get();
-        return customer.getName();
-    }
-    @RequestMapping("/customers/{id}/ssn")
-    @ResponseBody
-    public String getSsnById(@PathVariable long id){
-        Customer customer = customerRepo.findById(id).get();
-        return customer.getSsn();
+        String name = customer.getName();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String jsonString = objectMapper.writeValueAsString(name);
+            log.info(jsonString);
+            return ResponseEntity.ok(jsonString);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    @RequestMapping("/customers/new")
+    @GetMapping("/{id}/ssn")
+    @ResponseBody
+    public ResponseEntity<Object> getSsnById(@PathVariable long id){
+        Customer customer = customerRepo.findById(id).get();
+        String name = customer.getSsn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String jsonString = objectMapper.writeValueAsString(name);
+            log.info(jsonString);
+            return ResponseEntity.ok(jsonString);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @PostMapping("/new")
     @ResponseBody
     public Customer createNew(@RequestBody Customer customer){
         return customerRepo.save(new Customer(customer.getName(), customer.getSsn()));
     }
 
-    @RequestMapping(value = "/customers/{id}/update", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}/update")
     @ResponseBody
     public Customer updateById(@PathVariable long id, @RequestBody Customer updatedCustomer){
         Customer customerToUpdate = customerRepo.findById(id).get();
         customerToUpdate.setName(updatedCustomer.getName());
         customerToUpdate.setSsn(updatedCustomer.getSsn());
 
+        customerRepo.save(customerToUpdate);
         return customerToUpdate;
     }
 
-    @RequestMapping(value = "/customers/{id}/delete", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}/delete")
     @ResponseBody
     public String deleteById(@PathVariable long id){
         Customer customer = customerRepo.findById(id).get();

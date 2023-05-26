@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/Backend2/customer-micro" />
+    <file type="web" url="file://$PROJECT_DIR$/Backend2/frontend-micro" />
     <file type="web" url="file://$PROJECT_DIR$/Backend2/gateway-micro" />
     <file type="web" url="file://$PROJECT_DIR$/Backend2/item-micro" />
     <file type="web" url="file://$PROJECT_DIR$/Backend2/order-micro" />

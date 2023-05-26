@@ -5,6 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 public class OrderMicroApplication {
 
@@ -14,9 +17,17 @@ public class OrderMicroApplication {
 	@Bean
 	public CommandLineRunner orders (OrderRepo orderRepo) {
 		return (args) -> {
-			orderRepo.save(new Orders(1,1));
-			orderRepo.save(new Orders(2,2));
-			orderRepo.save(new Orders(3,3));
+			List<Long> list1 = new ArrayList<>();
+			List<Long> list2 = new ArrayList<>();
+			List<Long> list3 = new ArrayList<>();
+
+			list1.add(1L);
+			list2.add(1L);
+			list3.add(2L);
+			orderRepo.save(new Orders(1,list1));
+
+			orderRepo.save(new Orders(2,list2));
+			orderRepo.save(new Orders(3,list3));
 
 		};
 	}

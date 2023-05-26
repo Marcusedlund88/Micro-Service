@@ -23,11 +23,11 @@ public class Orders {
 
     protected long customerId;
 
-    protected long itemId;
+    protected List<Long> itemIds;
 
-    public Orders(long customerId, int itemId) {
+    public Orders(long customerId, List<Long> itemIds) {
         this.customerId = customerId;
-        this.itemId = itemId;
+        this.itemIds = itemIds;
     }
 
     //protected double totalCost;

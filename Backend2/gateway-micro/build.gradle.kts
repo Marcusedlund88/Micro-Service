@@ -16,8 +16,10 @@ repositories {
 extra["springCloudVersion"] = "2022.0.3-SNAPSHOT"
 
 dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.projectreactor:reactor-test")
 }
 
 dependencyManagement {

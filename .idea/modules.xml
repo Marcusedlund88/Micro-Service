@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Backend2Microservices.iml" filepath="$PROJECT_DIR$/.idea/Backend2Microservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.frontend-micro.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.frontend-micro.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.frontend-micro.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.frontend-micro.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/frontend-micro.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frontend-micro.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/frontend-micro.test.iml" filepath="$PROJECT_DIR$/.idea/modules/frontend-micro.test.iml" />
     </modules>
   </component>
 </project>
