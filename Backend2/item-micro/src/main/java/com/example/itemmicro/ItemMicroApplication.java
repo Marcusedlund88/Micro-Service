@@ -1,5 +1,7 @@
 package com.example.itemmicro;
 
+import com.example.itemmicro.Item.Item;
+import com.example.itemmicro.ItemRepository.ItemRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

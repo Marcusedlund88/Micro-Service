@@ -1,5 +1,7 @@
 package com.example.customermicro;
 
+import com.example.customermicro.Customer.Customer;
+import com.example.customermicro.CustomerRepository.CustomerRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

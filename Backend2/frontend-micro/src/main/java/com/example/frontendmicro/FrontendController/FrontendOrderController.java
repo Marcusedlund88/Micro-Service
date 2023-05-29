@@ -1,4 +1,4 @@
-package com.example.frontendmicro;
+package com.example.frontendmicro.FrontendController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

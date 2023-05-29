@@ -1,5 +1,7 @@
-package com.example.itemmicro;
+package com.example.itemmicro.ItemController;
 
+import com.example.itemmicro.Item.Item;
+import com.example.itemmicro.ItemRepository.ItemRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

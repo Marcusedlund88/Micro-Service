@@ -1,6 +1,8 @@
-package com.example.itemmicro;
+package com.example.itemmicro.ItemController;
 
 
+import com.example.itemmicro.Item.Item;
+import com.example.itemmicro.ItemRepository.ItemRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

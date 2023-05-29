@@ -1,6 +1,8 @@
-package com.example.frontendmicro;
+package com.example.frontendmicro.FrontendController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,10 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
-public class FrontendItemController {
-    @RequestMapping("/items")
+public class FrontendCustomerController {
+
+    private static final Logger log = LoggerFactory.getLogger(FrontendOrderController.class);
+
+    @RequestMapping("/customers")
     @ResponseBody
-    public ResponseEntity<?> getItems(HttpServletRequest request) {
+    public ResponseEntity<?> getCustomers(HttpServletRequest request) {
         RestTemplate restTemplate = new RestTemplate();
 
         String gatewayUrl = "http://localhost:8080";
@@ -34,9 +39,9 @@ public class FrontendItemController {
         return ResponseEntity.ok(responseBody);
 
     }
-    @RequestMapping("/items/{id}")
+    @RequestMapping("/customers/{id}")
     @ResponseBody
-    public ResponseEntity<?> getById(@PathVariable long id,  HttpServletRequest request) {
+    public ResponseEntity<?> getById(@PathVariable long id, HttpServletRequest request) {
         RestTemplate restTemplate = new RestTemplate();
 
         String gatewayUrl = "http://localhost:8080";
@@ -53,7 +58,7 @@ public class FrontendItemController {
         return ResponseEntity.ok(responseBody);
 
     }
-    @RequestMapping("/items/{id}/name")
+    @RequestMapping("/customers/{id}/name")
     @ResponseBody
     public ResponseEntity<?> getNameById(@PathVariable long id, HttpServletRequest request) {
         RestTemplate restTemplate = new RestTemplate();
@@ -72,7 +77,7 @@ public class FrontendItemController {
         return ResponseEntity.ok(responseBody);
 
     }
-    @RequestMapping("/items/{id}/price")
+    @RequestMapping("/customers/{id}/ssn")
     @ResponseBody
     public ResponseEntity<?> getSsnById(@PathVariable long id, HttpServletRequest request) {
         RestTemplate restTemplate = new RestTemplate();
@@ -91,7 +96,7 @@ public class FrontendItemController {
         return ResponseEntity.ok(responseBody);
 
     }
-    @RequestMapping("/items/{id}/delete")
+    @RequestMapping("/customers/{id}/delete")
     @ResponseBody
     public ResponseEntity<?> deleteById(@PathVariable long id, HttpServletRequest request) {
         RestTemplate restTemplate = new RestTemplate();
@@ -107,18 +112,20 @@ public class FrontendItemController {
 
         return ResponseEntity.status(response.getStatusCode()).build();
     }
-    @RequestMapping("/items/{id}/update")
+    @RequestMapping("/customers/{id}/update")
     @ResponseBody
     public ResponseEntity<?> updateById(@PathVariable long id, @RequestBody String requestBody) {
         RestTemplate restTemplate = new RestTemplate();
 
         String gatewayUrl = "http://localhost:8080";
-        String requestUrl = gatewayUrl + "/items/"+id+"/update";
+        String requestUrl = gatewayUrl + "/customers/"+id+"/update";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
         HttpEntity<String> httpEntity = new HttpEntity<>(requestBody, headers);
+
+        log.info(requestBody);
 
         ResponseEntity<?> response = restTemplate.exchange(
                 requestUrl,
