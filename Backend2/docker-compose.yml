@@ -1,5 +1,20 @@
 version: '3'
 services:
+  users-db:
+    image: mysql
+    ports:
+      - 3310:3306
+    environment:
+      - MYSQL_DATABASE=users
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    volumes:
+      - ./customer-micro/sql:/docker-entrypoint-initdb.d
+    networks:
+      - micro-network
+    restart: always
+
   customer-db:
     image: mysql
     ports:
@@ -96,6 +111,18 @@ services:
     networks:
       - micro-network
     restart: always
+
+  security-micro:
+      build:
+        context: ./security-micro
+        dockerfile: Dockerfile
+      ports:
+        - 8084:8080
+      depends_on:
+        - users-db
+      networks:
+        - micro-network
+      restart: always
 
 networks:
   micro-network:

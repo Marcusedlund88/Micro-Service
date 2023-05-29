@@ -53,6 +53,16 @@
           </set>
         </option>
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Backend2/security-micro" />
+        <option name="gradleJvm" value="corretto-17" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/Backend2/security-micro" />
+          </set>
+        </option>
+      </GradleProjectSettings>
     </option>
   </component>
 </project>

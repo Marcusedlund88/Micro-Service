@@ -57,6 +57,7 @@ public class OrderController {
         String username = responseCustomer.getBody();
 
         List<String> itemsToEvaluate = new ArrayList<>();
+
         orderToVerify.getItemIds().forEach(item->{
             ResponseEntity<String> responseItem = restTemplate.exchange(
                     "http://gateway-micro:8080/items/{item}/name",
@@ -82,6 +83,13 @@ public class OrderController {
         Orders order = new Orders(orders.getCustomerId(), orders.getItemIds());
         orderRepo.save(order);
         return order;
+    }
+
+    @PutMapping("/{id}/update")
+    @ResponseBody
+    public Orders updateOrder(@PathVariable long id){
+         Orders orderToUpdate = orderRepo.findById(id).get();
+         return orderToUpdate;
     }
 }
 

@@ -7,6 +7,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.frontend-micro.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.frontend-micro.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/frontend-micro.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frontend-micro.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/frontend-micro.test.iml" filepath="$PROJECT_DIR$/.idea/modules/frontend-micro.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend2/security-micro/src/main/main1.iml" filepath="$PROJECT_DIR$/Backend2/security-micro/src/main/main1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend2/security-micro/src/main/main2.iml" filepath="$PROJECT_DIR$/Backend2/security-micro/src/main/main2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend2/security-micro/src/test/test1.iml" filepath="$PROJECT_DIR$/Backend2/security-micro/src/test/test1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend2/security-micro/src/test/test2.iml" filepath="$PROJECT_DIR$/Backend2/security-micro/src/test/test2.iml" />
     </modules>
   </component>
 </project>
