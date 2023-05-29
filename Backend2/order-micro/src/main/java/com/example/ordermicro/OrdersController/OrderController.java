@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/orders")
+@RequestMapping("/auth/orders")
 @CrossOrigin(origins = "http://localhost:9090")
 public class OrderController {
 

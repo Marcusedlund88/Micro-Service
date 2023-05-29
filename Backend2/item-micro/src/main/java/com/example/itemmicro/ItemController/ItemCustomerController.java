@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/items")
+@RequestMapping("/auth/items")
 @CrossOrigin(origins = "http://localhost:9090")
 public class ItemCustomerController {
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/customers")
+@RequestMapping("/auth/customers")
 @CrossOrigin(origins = "http://localhost:9090")
 public class CustomerController {
     private static final Logger log = LoggerFactory.getLogger(CustomerController.class);
