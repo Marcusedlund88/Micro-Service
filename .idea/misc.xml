@@ -7,6 +7,7 @@
     <file type="web" url="file://$PROJECT_DIR$/Backend2/gateway-micro" />
     <file type="web" url="file://$PROJECT_DIR$/Backend2/item-micro" />
     <file type="web" url="file://$PROJECT_DIR$/Backend2/order-micro" />
+    <file type="web" url="file://$PROJECT_DIR$/Backend2/security-micro" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_18" project-jdk-name="19" project-jdk-type="JavaSDK" />
 </project>
